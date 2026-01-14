@@ -5,3 +5,6 @@ edition = "2024"
 authors = ["kkatou7209@gmail.com"]
 
 [dependencies]
+
+[lib]
+doctest = false
