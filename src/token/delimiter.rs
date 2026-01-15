@@ -45,11 +45,10 @@ pub enum Delimiter {
     PercentSign,
 }
 
-impl Deref for Delimiter {
+impl Delimiter {
     
-    type Target = u8;
-
-    fn deref(&self) -> &Self::Target {
+    /// Returns the byte representation of the Delimiter.
+    pub fn as_byte(&self) -> &u8 {
         match self {
             Delimiter::LeftParen => &b'(',
             Delimiter::RightParen => &b')',
@@ -62,5 +61,30 @@ impl Deref for Delimiter {
             Delimiter::Solidus => &b'/',
             Delimiter::PercentSign => &b'%',
         }
+    }
+}
+
+impl PartialEq<u8> for Delimiter {
+    
+    fn eq(&self, other: &u8) -> bool {
+        self.as_byte() == other
+    }
+}
+
+mod tests {
+    use super::Delimiter;
+
+    #[test]
+    fn should_compare_with_byte() {
+        assert_eq!(Delimiter::LeftParen, b'(');
+        assert_eq!(Delimiter::RightAngle, b'>');
+        assert_eq!(Delimiter::Solidus, b'/');
+        assert_eq!(Delimiter::PercentSign, b'%');
+        assert_eq!(Delimiter::RightCurlyBracket, b'}');
+        assert_eq!(Delimiter::LeftSquare, b'[');
+        assert_eq!(Delimiter::RightSquare, b']');
+        assert_eq!(Delimiter::LeftAngle, b'<');
+        assert_eq!(Delimiter::RightParen, b')');
+        assert_eq!(Delimiter::LeftCurlyBracket, b'{');
     }
 }
