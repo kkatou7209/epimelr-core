@@ -1,19 +1,19 @@
 //! This module contains the core implementation of the redactor library.
-use std::{fs::File, sync::Arc};
-
-use crate::binary::*;
+use std::io::{BufReader, Read};
+use std::sync::{Arc, Mutex};
+use std::fs::File;
 
 /// A core implementation of this library.
 /// <br>
 /// 
-/// For instanciating, use `Redactor::from(&File)`:
+/// For instanciating, use `Redactor::try_from(&File)`:
 /// 
 /// ```rs
 /// use std::fs::File;
 /// use redactor::Redactor;
 /// 
 /// let file = File::open("path/to/file").expect("Failed to open file");
-/// let redactor = Redactor::from(&file);
+/// let redactor = Redactor::try_from(&file).expect("Failed to create Redactor");
 /// ```
 /// <br>
 /// 
@@ -22,7 +22,7 @@ use crate::binary::*;
 /// ```rs
 /// use redactor::Redactor;
 /// 
-/// let redactor = Redactor::from("path/to/file");
+/// let redactor = Redactor::try_from("path/to/file").expect("Failed to create Redactor");
 /// ```
 /// 
 /// To get the length of the content, use the `content_len` method:
@@ -31,58 +31,45 @@ use crate::binary::*;
 /// let length: usize = redactor.content_len();
 /// println!("Content length: {}", length);
 /// ```
-/// <br>
-/// 
-/// To get the content as a `String`, use the `as_string` method:
-/// 
-/// ```rs
-/// let content: String = redactor.as_string();
-/// println!("Content: {}", content);
-/// ```
 #[derive(Debug, Clone)]
-pub(crate) struct Redactor {
+pub struct Redactor {
     /// The original byte source.
-    original: Arc<dyn ByteSource>,
+    original: Arc<Mutex<Vec<u8>>>,
 }
 
 impl Redactor {
     
     /// Returns the length of the content.
     pub fn content_len(&self) -> usize {
-        self.original.len()
-    }
-
-    /// Returns the content as a `String`.
-    pub fn as_string(&self) -> String {
-
-        let original = Arc::clone(&self.original);
-        
-        String::from_utf8_lossy(&original[..]).to_string()
+        self.original.lock().unwrap().len()
     }
 }
 
-impl From<&File> for Redactor {
+impl TryFrom<&File> for Redactor {
 
-    fn from(file: &File) -> Self {
-        let source = create_source_from_file(file)
-            .expect("Failed to create byte source from file");
+    type Error = std::io::Error;
 
-        Self {
-            original: Arc::new(source),
-        }
+    fn try_from(value: &File) -> Result<Self, Self::Error> {
+        let mut reader = BufReader::new(value);
+        let mut data = Vec::new();
+        reader.read_to_end(&mut data)?;
+
+        Ok(Self {
+            original: Arc::new(Mutex::new(data)),
+        })
     }
 }
 
-impl From<&str> for Redactor {
+impl TryFrom<&str> for Redactor {
+
+    type Error = std::io::Error;
     
-    fn from(value: &str) -> Self {
-        let file = File::open(value).expect("Failed to open file");
+    fn try_from(value: &str) -> Result<Self, std::io::Error> {
 
-        let source = create_source_from_file(&file)
-            .expect("Failed to create byte source from file");
+        let data = std::fs::read(value)?;
 
-        Self {
-            original: Arc::new(source),
-        }
+        Ok(Self {
+            original: Arc::new(Mutex::new(data)),
+        })
     }
 }
