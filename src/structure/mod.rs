@@ -1,3 +1,5 @@
+//! This module contains structures representing various PDF structural elements.
+
 mod comment;
 mod header;
 mod version;

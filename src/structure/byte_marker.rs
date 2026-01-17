@@ -1,4 +1,4 @@
-use crate::util::check::is_valid_byte_marker_value;
+use crate::specification::structure::byte_marker::is_valid_byte_marker_value;
 
 /// PDF Byte Marker representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -33,6 +33,7 @@ impl ByteMarker {
     }
 }
 
+#[cfg(test)]
 mod tests {
     use super::ByteMarker;
 

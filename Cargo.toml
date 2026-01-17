@@ -5,6 +5,7 @@ edition = "2024"
 authors = ["kkatou7209@gmail.com"]
 
 [dependencies]
+memmap2 = "0.9.9"
 
 [lib]
 doctest = false

@@ -28,17 +28,8 @@ impl Header {
 
     /// Returns the byte marker of the header.
     pub fn byte_marker(&self) -> &ByteMarker {
+
         &self.byte_marker
-    }
-
-    /// Changes the PDF version of the header.
-    pub fn change_version(&mut self, version: Version) {
-        self.version = version;
-    }
-
-    /// Changes the byte marker of the header.
-    pub fn change_byte_marker(&mut self, byte_marker: ByteMarker) {
-        self.byte_marker = byte_marker;
     }
 }
 
