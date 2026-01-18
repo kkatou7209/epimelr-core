@@ -1,17 +1,21 @@
 //! This module contains PDF object representations.
 mod array;
 mod boolean;
+mod hexadecimal_string;
 mod integer;
+mod literal_string;
 mod name;
 mod null;
 mod real;
 
-use crate::object::array::Array;
-use crate::object::boolean::Boolean;
-use crate::object::integer::Integer;
-use crate::object::name::Name;
-use crate::object::null::Null;
-use crate::object::real::Real;
+pub use array::Array;
+pub use boolean::Boolean;
+pub use hexadecimal_string::HexadecimalString;
+pub use integer::Integer;
+pub use literal_string::LiteralString;
+pub use name::Name;
+pub use null::Null;
+pub use real::Real;
 
 /// PDF Object representation.
 #[derive(Debug, Clone)]
@@ -20,6 +24,10 @@ pub enum Object {
     Array(Array),
     /// PDF `Boolean` object.
     Boolean(Boolean),
+    /// PDF `LiteralString` object.
+    LiteralString(LiteralString),
+    /// PDF `HexadecimalString` object.
+    HexadecimalString(HexadecimalString),
     /// PDF `Integer` object.
     Integer(Integer),
     /// PDF `Name` object.
@@ -41,6 +49,7 @@ impl Object {
             Object::Name(obj) => obj.as_bytes(),
             Object::Null(obj) => obj.as_bytes(),
             Object::Real(obj) => obj.as_bytes(),
+            _ => unimplemented!(),
         }
     }
 }

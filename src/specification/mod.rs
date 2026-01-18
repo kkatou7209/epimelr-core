@@ -4,3 +4,4 @@
 
 pub mod object;
 pub mod structure;
+pub mod value;
