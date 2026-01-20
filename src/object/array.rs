@@ -17,7 +17,7 @@ impl Array {
         bytes.push(b'[');
         
         for (i, obj) in objects.iter().enumerate() {
-            if i > 0 {
+            if i > 0 && objects.len() > 1 {
                 bytes.push(b' ');
             }
             bytes.extend_from_slice(&obj.as_bytes());
@@ -43,13 +43,14 @@ impl Array {
 
 #[cfg(test)]
 mod tests {
-    use crate::object::Object;
+    use crate::object::{HexadecimalString, LiteralString, Object};
     use crate::object::integer::Integer;
     use crate::object::boolean::Boolean;
     use crate::object::name::Name;
     use crate::object::null::Null;
     use crate::object::real::Real;
     use crate::object::array::Array;
+    use crate::value::{HexadecimalChar, LiteralChar, Ascii, EscapeSequence};
 
     #[test]
     fn should_returns_valid_bytes() {
@@ -59,14 +60,39 @@ mod tests {
             Object::Boolean(Boolean::new(true)),
             Object::Name(Name::new(b"/TestName").unwrap()),
             Object::Null(Null::new()),
-            Object::Real(Real::new(b"3.14")),
+            Object::Real(Real::new(b"3.14").unwrap()),
+            Object::LiteralString(LiteralString::new(vec![
+                LiteralChar::Ascii(Ascii::new(b'A')),
+                LiteralChar::Ascii(Ascii::new(b'B')),
+                LiteralChar::Ascii(Ascii::new(b'C')),
+                LiteralChar::EscapeSequence(EscapeSequence::Tab),
+                LiteralChar::Ascii(Ascii::new(b'D')),
+                LiteralChar::EscapeSequence(EscapeSequence::EndOfLineCR)
+            ])),
+            Object::HexadecimalString(HexadecimalString::new(vec![
+                HexadecimalChar::new(b"4A"),
+                HexadecimalChar::new(b"6F"),
+                HexadecimalChar::new(b"68"),
+                HexadecimalChar::new(b"6E"),
+            ])),
             Object::Array(Array::new(vec![
                 Object::Integer(Integer::new(b"1").unwrap()),
                 Object::Integer(Integer::new(b"2").unwrap()),
                 Object::Integer(Integer::new(b"3").unwrap()),
+                Object::Array(Array::new(vec![
+                    Object::Integer(Integer::new(b"76").unwrap()),
+                    Object::LiteralString(LiteralString::new(vec![
+                        LiteralChar::Ascii(Ascii::new(b'F')),
+                        LiteralChar::EscapeSequence(EscapeSequence::RightParenthesis),
+                        LiteralChar::EscapeSequence(EscapeSequence::CarriageReturn),
+                    ]))
+                ])),
             ])),
         ]);
 
-        assert_eq!(array.as_bytes(), b"[42 true /TestName null 3.14 [1 2 3]]");
+        assert_eq!(
+            array.as_bytes(),
+            b"[42 true /TestName null 3.14 (ABC\\tD\r) <4A6F686E> [1 2 3 [76 (F\\)\\r)]]]"
+        );
     }
 }

@@ -49,7 +49,8 @@ impl Object {
             Object::Name(obj) => obj.as_bytes(),
             Object::Null(obj) => obj.as_bytes(),
             Object::Real(obj) => obj.as_bytes(),
-            _ => unimplemented!(),
+            Object::LiteralString(obj) => obj.as_bytes(),
+            Object::HexadecimalString(obj) => obj.as_bytes(),
         }
     }
 }

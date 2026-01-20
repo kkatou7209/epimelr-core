@@ -48,9 +48,9 @@ impl EscapeSequence {
             EscapeSequence::Backslash => br"\\",
             EscapeSequence::CharacterCode(code) => code.as_bytes(),
             EscapeSequence::Empty => br"\",
-            EscapeSequence::EndOfLineCR => b"\\\r",
-            EscapeSequence::EndOfLineLF => b"\\\n",
-            EscapeSequence::EndOfLineCRLF => b"\\\r\n",
+            EscapeSequence::EndOfLineCR => b"\r",
+            EscapeSequence::EndOfLineLF => b"\n",
+            EscapeSequence::EndOfLineCRLF => b"\r\n",
         }
     }
 }

@@ -1,8 +1,8 @@
-use crate::value::literal_char::ascii::Ascii;
-use crate::value::literal_char::escape_sequence::EscapeSequence;
-
 mod ascii;
 mod escape_sequence;
+
+pub use ascii::Ascii;
+pub use escape_sequence::EscapeSequence;
 
 /// PDF Literal string character representation.
 #[derive(Debug, Clone)]

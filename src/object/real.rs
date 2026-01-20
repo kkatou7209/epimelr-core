@@ -9,13 +9,13 @@ pub struct Real {
 impl Real {
     
     /// Creates a new `Real` from the given bytes.
-    pub fn new(bytes: &[u8]) -> Self {
+    pub fn new(bytes: &[u8]) -> Result<Self, String> {
         
         if let Err(e) = validate_real_number_bytes(bytes) {
-            panic!("Real number contains invalid characters: {}", e);
+            return Err(format!("Real number contains invalid characters: {}", e));
         }
 
-        Self { bytes: bytes.to_vec() }
+        Ok(Self { bytes: bytes.to_vec() })
     }
 
     /// Returns the byte representation of the Real.
