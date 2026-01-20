@@ -55,15 +55,15 @@ mod tests {
     fn should_returns_valid_bytes() {
 
         let array = Array::new(vec![
-            Object::Integer(Integer::new(b"42")),
+            Object::Integer(Integer::new(b"42").unwrap()),
             Object::Boolean(Boolean::new(true)),
-            Object::Name(Name::new(b"/TestName")),
+            Object::Name(Name::new(b"/TestName").unwrap()),
             Object::Null(Null::new()),
             Object::Real(Real::new(b"3.14")),
             Object::Array(Array::new(vec![
-                Object::Integer(Integer::new(b"1")),
-                Object::Integer(Integer::new(b"2")),
-                Object::Integer(Integer::new(b"3")),
+                Object::Integer(Integer::new(b"1").unwrap()),
+                Object::Integer(Integer::new(b"2").unwrap()),
+                Object::Integer(Integer::new(b"3").unwrap()),
             ])),
         ]);
 

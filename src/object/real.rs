@@ -1,4 +1,4 @@
-use crate::specification::object::real::is_valid_real_number_bytes;
+use crate::specification::object::real::validate_real_number_bytes;
 
 /// A PDF Real object representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -11,8 +11,8 @@ impl Real {
     /// Creates a new `Real` from the given bytes.
     pub fn new(bytes: &[u8]) -> Self {
         
-        if !is_valid_real_number_bytes(bytes) {
-            panic!("real number contains invalid characters");
+        if let Err(e) = validate_real_number_bytes(bytes) {
+            panic!("Real number contains invalid characters: {}", e);
         }
 
         Self { bytes: bytes.to_vec() }

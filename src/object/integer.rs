@@ -1,4 +1,4 @@
-use crate::specification::object::integer::is_valid_integer_bytes;
+use crate::specification::object::integer::validate_integer_bytes;
 
 /// PDF Integer object representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -9,21 +9,17 @@ pub struct Integer {
 impl Integer {
 
     /// Creates a new `Integer` from the given bytes.
-    pub fn new(bytes: &[u8]) -> Self {
+    pub fn new(bytes: &[u8]) -> Result<Self, String> {
 
-        if !is_valid_integer_bytes(bytes) {
-            panic!("integer contains invalid characters");
+        if let Err(e) = validate_integer_bytes(bytes) {
+            return Err(format!("Invalid integer bytes: {:?}", e));
         }
 
-        Self { bytes: bytes.to_vec() }
+        Ok(Self { bytes: bytes.to_vec() })
     }
 
     /// Returns the byte representation of the Integer.
     pub fn as_bytes(&self) -> &[u8] {
-
-        if !is_valid_integer_bytes(&self.bytes) {
-            panic!("integer contains invalid characters");
-        }
 
         &self.bytes
     }

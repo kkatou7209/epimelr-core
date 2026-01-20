@@ -1,19 +1,22 @@
-
-/// Checks if the given byte slice represents a valid real number in PDF syntax.
-pub fn is_valid_real_number_bytes(bytes: &[u8]) -> bool {
+/// Checks if the given bytes represent a valid real number in PDF format.
+pub fn validate_real_number_bytes(bytes: &[u8]) -> Result<(), String> {
 
     if bytes.is_empty() {
-        return false;
+        return Err(format!("Real number bytes cannot be empty"));
     }
 
     let mut chars = bytes.iter();
 
     // Starts with sign
-    if bytes[0] == b'+' || bytes[0] == b'-' {
+    if !bytes[0].is_ascii_digit() && bytes[0] != b'.' {
+
+        if bytes[0] != b'+' && bytes[0] != b'-' {
+            return Err(format!("Real number must start with a digit, dot, or sign: {:?}", bytes));
+        }
 
         // Sign only is invalid
         if bytes.len() == 1 {
-            return false;
+            return Err(format!("Real number cannot be only a sign: {:?}", bytes));
         }
 
         let _ = chars.next();
@@ -28,7 +31,7 @@ pub fn is_valid_real_number_bytes(bytes: &[u8]) -> bool {
 
         // Valid characters are digits and dot
         if !char.is_ascii_digit() && char != &b'.' {
-            return false;
+            return Err(format!("Real number contains invalid character: {:?}", bytes));
         }
 
         if char == &b'.' {
@@ -41,22 +44,21 @@ pub fn is_valid_real_number_bytes(bytes: &[u8]) -> bool {
 
         // More than one dot is invalid
         if dot_count > 1 {
-            return false;
+            return Err(format!("Real number cannot contain more than one dot: {:?}", bytes));
         }
     }
 
     // There must be at least one digit
     if digit_count == 0 {
-        return false;
+        return Err(format!("Real number must contain at least one digit: {:?}", bytes));
     }
 
-    true
+    Ok(())
 }
 
 #[cfg(test)]
 mod tests {
-    use super::is_valid_real_number_bytes;
-
+    
     #[test]
     fn should_returns_true_if_valid_real_numbers() {
         let valid_real_numbers: &[&[u8]] = &[
@@ -72,7 +74,7 @@ mod tests {
         ];
 
         for &number in valid_real_numbers {
-            assert!(is_valid_real_number_bytes(number));
+            assert!(super::validate_real_number_bytes(number).is_ok());
         }
     }
 
@@ -97,7 +99,7 @@ mod tests {
         ];
 
         for &number in invalid_real_numbers {
-            assert!(!is_valid_real_number_bytes(number));
+            assert!(super::validate_real_number_bytes(number).is_err());
         }
     }
 }

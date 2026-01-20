@@ -1,4 +1,4 @@
-use crate::specification::object::name::is_valid_name_bytes;
+use crate::specification::object::name::validate_name_bytes;
 
 /// PDF Name object representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -10,13 +10,13 @@ pub struct Name {
 impl Name {
     
     /// Creates a new `Name` from the given bytes.
-    pub fn new(bytes: &[u8]) -> Self {
+    pub fn new(bytes: &[u8]) -> Result<Self, String> {
         
-        if !is_valid_name_bytes(bytes) {
-            panic!("name contains invalid characters");
+        if let Err(e) = validate_name_bytes(bytes) {
+            return Err(format!("Invalid name bytes: {:?}", e));
         }
 
-        Self { bytes: bytes.to_vec() }
+        Ok(Self { bytes: bytes.to_vec() })
     }
 
     /// Returns the byte representation of the Name.
@@ -32,13 +32,13 @@ mod tests {
 
     #[test]
     fn should_create_valid_name() {
-        let name = Name::new(b"/ExampleName");
+        let name = Name::new(b"/ExampleName").unwrap();
         assert_eq!(name.as_bytes(), b"/ExampleName");
     }
 
     #[test]
-    #[should_panic(expected = "name contains invalid characters")]
-    fn should_panic_when_creating_name_with_invalid_characters() {
-        let _name = Name::new(b"Invalid %Name!");
+    fn should_error_when_creating_name_with_invalid_characters() {
+        let result = Name::new(b"/Invalid Name ");
+        assert!(result.is_err());
     }
 }
