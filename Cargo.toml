@@ -3,6 +3,7 @@ name = "redactor-core"
 version = "0.1.0"
 edition = "2024"
 authors = ["kkatou7209@gmail.com"]
+description = "A PDF redaction library of Rust."
 
 [dependencies]
 memmap2 = "0.9.9"
