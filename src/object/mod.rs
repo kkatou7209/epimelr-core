@@ -64,3 +64,26 @@ impl DirectObject {
         }
     }
 }
+
+/// PDF Indirect Object representation.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum IndirectObject {
+    /// PDF `Object` object.
+    Object(Object),
+    /// PDF `Reference` object.
+    Reference(Reference),
+    /// PDF `Stream` object.
+    Stream(Stream),
+}
+
+impl IndirectObject {
+    
+    /// Returns the byte representation of the Indirect Object.
+    pub fn as_bytes(&self) -> Vec<u8> {
+        match self {
+            IndirectObject::Object(obj) => obj.as_bytes(),
+            IndirectObject::Reference(obj) => obj.as_bytes(),
+            _ => unimplemented!(),
+        }
+    }
+}
