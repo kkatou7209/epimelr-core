@@ -1,16 +1,16 @@
-use crate::object::Object;
+use crate::object::direct::DirectObject;
 
 /// A PDF Array object.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Array {
-    objects: Vec<Object>,
+    objects: Vec<DirectObject>,
     bytes: Vec<u8>,
 }
 
 impl Array {
     
     /// Creates a new `Array` from the given objects.
-    pub fn new(objects: Vec<Object>) -> Self {
+    pub fn new(objects: Vec<DirectObject>) -> Self {
 
         let mut bytes = Vec::new();
         
@@ -29,7 +29,7 @@ impl Array {
     }
 
     /// Returns the objects contained in the Array.
-    pub fn as_objects(&self) -> &[Object] {
+    pub fn as_objects(&self) -> &[DirectObject] {
         
         &self.objects
     }
@@ -43,26 +43,26 @@ impl Array {
 
 #[cfg(test)]
 mod tests {
-    use crate::object::dicionary::DicionaryEntry;
-    use crate::object::{HexadecimalString, LiteralString, Object};
-    use crate::object::integer::Integer;
-    use crate::object::boolean::Boolean;
-    use crate::object::name::Name;
-    use crate::object::null::Null;
-    use crate::object::real::Real;
-    use crate::object::array::Array;
+    use crate::object::direct::dicionary::DicionaryEntry;
+    use crate::object::direct::{HexadecimalString, LiteralString, DirectObject};
+    use crate::object::direct::integer::Integer;
+    use crate::object::direct::boolean::Boolean;
+    use crate::object::direct::name::Name;
+    use crate::object::direct::null::Null;
+    use crate::object::direct::real::Real;
+    use crate::object::direct::array::Array;
     use crate::value::{HexadecimalChar, LiteralChar, Ascii, EscapeSequence};
 
     #[test]
     fn should_returns_valid_bytes() {
 
         let array = Array::new(vec![
-            Object::Integer(Integer::new(b"42").unwrap()),
-            Object::Boolean(Boolean::new(true)),
-            Object::Name(Name::new(b"/TestName").unwrap()),
-            Object::Null(Null::new()),
-            Object::Real(Real::new(b"3.14").unwrap()),
-            Object::LiteralString(LiteralString::new(vec![
+            DirectObject::Integer(Integer::new(b"42").unwrap()),
+            DirectObject::Boolean(Boolean::new(true)),
+            DirectObject::Name(Name::new(b"/TestName").unwrap()),
+            DirectObject::Null(Null::new()),
+            DirectObject::Real(Real::new(b"3.14").unwrap()),
+            DirectObject::LiteralString(LiteralString::new(vec![
                 LiteralChar::Ascii(Ascii::new(b'A')),
                 LiteralChar::Ascii(Ascii::new(b'B')),
                 LiteralChar::Ascii(Ascii::new(b'C')),
@@ -70,32 +70,32 @@ mod tests {
                 LiteralChar::Ascii(Ascii::new(b'D')),
                 LiteralChar::EscapeSequence(EscapeSequence::EndOfLine)
             ])),
-            Object::Dicionary(crate::object::dicionary::Dicionary::new(vec![
+            DirectObject::Dicionary(crate::object::direct::dicionary::Dicionary::new(vec![
                 DicionaryEntry {
                     key: Name::new(b"/Elements").unwrap(),
-                    value: Object::Array(Array::new(vec![
-                        Object::Integer(Integer::new(b"0").unwrap()),
-                        Object::Real(Real::new(b"-0.4").unwrap())
+                    value: DirectObject::Array(Array::new(vec![
+                        DirectObject::Integer(Integer::new(b"0").unwrap()),
+                        DirectObject::Real(Real::new(b"-0.4").unwrap())
                     ])),
                 },
                 DicionaryEntry {
                     key: Name::new(b"/Count").unwrap(),
-                    value: Object::Integer(Integer::new(b"+2").unwrap()),
+                    value: DirectObject::Integer(Integer::new(b"+2").unwrap()),
                 },
-            ])), // Empty dictionary for simplicity
-            Object::HexadecimalString(HexadecimalString::new(vec![
+            ])),
+            DirectObject::HexadecimalString(HexadecimalString::new(vec![
                 HexadecimalChar::new(b"4A"),
                 HexadecimalChar::new(b"6F"),
                 HexadecimalChar::new(b"68"),
                 HexadecimalChar::new(b"6E"),
             ])),
-            Object::Array(Array::new(vec![
-                Object::Integer(Integer::new(b"1").unwrap()),
-                Object::Integer(Integer::new(b"2").unwrap()),
-                Object::Integer(Integer::new(b"3").unwrap()),
-                Object::Array(Array::new(vec![
-                    Object::Integer(Integer::new(b"76").unwrap()),
-                    Object::LiteralString(LiteralString::new(vec![
+            DirectObject::Array(Array::new(vec![
+                DirectObject::Integer(Integer::new(b"1").unwrap()),
+                DirectObject::Integer(Integer::new(b"2").unwrap()),
+                DirectObject::Integer(Integer::new(b"3").unwrap()),
+                DirectObject::Array(Array::new(vec![
+                    DirectObject::Integer(Integer::new(b"76").unwrap()),
+                    DirectObject::LiteralString(LiteralString::new(vec![
                         LiteralChar::Ascii(Ascii::new(b'F')),
                         LiteralChar::EscapeSequence(EscapeSequence::RightParenthesis),
                         LiteralChar::EscapeSequence(EscapeSequence::CarriageReturn),

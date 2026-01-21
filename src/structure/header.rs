@@ -17,7 +17,7 @@ impl Header {
         Self {
             version,
             // Traditional byte marker "%âãÏÓ"
-            byte_marker: ByteMarker::new(b"\xE2\xE3\xCF\xD3".to_vec()),
+            byte_marker: ByteMarker::new(b"\xE2\xE3\xCF\xD3".to_vec()).unwrap(),
         }
     }
 

@@ -1,4 +1,4 @@
-use crate::specification::structure::version::is_valid_version;
+use crate::specification::structure::version::validate_version;
 
 /// PDF version representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -13,17 +13,17 @@ pub struct Version {
 
 impl Version {
     /// Creates a new `Version` with the given major and minor numbers.
-    pub fn new(major: u8, minor: u8) -> Self {
+    pub fn new(major: u8, minor: u8) -> Result<Self, String> {
 
-        if !is_valid_version(major, minor) {
-            panic!("invalid PDF version: {}.{}", major, minor);
+        if let Err(e) = validate_version(major, minor) {
+            return Err(format!("Invalid version {}.{}: {}", major, minor, e));
         }
 
-        Self {
+        Ok(Self {
             major,
             minor,
             bytes: format!("{}.{}", major, minor).into_bytes()
-        }
+        })
     }
 
     /// Returns the major version number.
@@ -48,7 +48,7 @@ mod tests {
 
     #[test]
     fn test_version_creation() {
-        let version = Version::new(1, 7);
+        let version = Version::new(1, 7).unwrap();
         assert_eq!(version.major(), 1);
         assert_eq!(version.minor(), 7);
         assert_eq!(version.as_bytes(), b"1.7");

@@ -1,19 +1,18 @@
-use core::str;
 use std::collections::HashMap;
 
-use crate::object::{Name, Object};
+use crate::object::direct::{Name, DirectObject};
 
 /// PDF Dictionary entry representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DicionaryEntry {
     pub key: Name,
-    pub value: Object,
+    pub value: DirectObject,
 }
 
 /// PDF Dictionary object representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Dicionary {
-    entries: HashMap<Name, Object>,
+    entries: HashMap<Name, DirectObject>,
     bytes: Vec<u8>,
 }
 
@@ -39,7 +38,7 @@ impl Dicionary {
         
         bytes.extend_from_slice(b">>");
 
-        let entries: HashMap<Name, Object> = entries.into_iter().map(|e| (e.key, e.value)).collect();
+        let entries: HashMap<Name, DirectObject> = entries.into_iter().map(|e| (e.key, e.value)).collect();
         
         Self {
             entries,
@@ -48,7 +47,7 @@ impl Dicionary {
     }
 
     /// Returns the entries of the Dicionary.
-    pub fn entries(&self) -> &HashMap<Name, Object> {
+    pub fn entries(&self) -> &HashMap<Name, DirectObject> {
 
         &self.entries
     }
@@ -62,20 +61,18 @@ impl Dicionary {
 
 #[cfg(test)]
 mod tests {
-    use crate::object::dicionary::DicionaryEntry;
-    use crate::object::{Dicionary, Name, Object};
-    use crate::object::integer::Integer;
-
+    use crate::object::direct::{Dicionary, DicionaryEntry, Name, DirectObject, Integer};
+    
     #[test]
     fn should_create_dicionary_and_return_bytes() {
         let dicionary = Dicionary::new(vec![
             DicionaryEntry {
                 key: Name::new(b"/Key1").unwrap(),
-                value: Object::Integer(Integer::new(b"42").unwrap()),
+                value: DirectObject::Integer(Integer::new(b"42").unwrap()),
             },
             DicionaryEntry {
                 key: Name::new(b"/Key2").unwrap(),
-                value: Object::Integer(Integer::new(b"100").unwrap()),
+                value: DirectObject::Integer(Integer::new(b"100").unwrap()),
             },
         ]);
 
