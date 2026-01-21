@@ -1,3 +1,5 @@
+use std::sync::LazyLock;
+
 /// A PDF Null object representation.
 /// 
 /// This struct implements `PartialEq`, but all `Null`

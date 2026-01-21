@@ -3,7 +3,9 @@ use crate::value::HexadecimalChar;
 /// PDF Hexadecimal String representation (i.e `<4A6F686E>`).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct HexadecimalString {
+    /// The hexadecimal characters comprising the string.
     chars: Vec<HexadecimalChar>,
+    /// The byte representation of the Hexadecimal String.
     bytes: Vec<u8>,
 }
 

@@ -33,9 +33,9 @@ This roadmap may changes as the development progresses.
     - [x] Array Objects
     - [x] Dictionary Objects
     - [x] Null Objects
-  - [ ] Indirect Objects
+  - [x] Indirect Objects
+  - [x] Indirect References
   - [ ] Stream Objects
-  - [ ] References
 
 - [ ] Structure
   - [ ] Document Catalog

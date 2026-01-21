@@ -1,13 +1,13 @@
 /// PDF Indirect Reference representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct IndirectReference {
+pub struct Reference {
     /// PDF Indirect Reference object number.
     number: u32,
     /// PDF Indirect Reference object generation.
     generation: u32,
 }
 
-impl IndirectReference {
+impl Reference {
     
     /// Creates a new `IndirectReference` from the given number and generation.
     pub fn new(number: u32, generation: u32) -> Self {
@@ -46,13 +46,13 @@ impl IndirectReference {
 
 #[cfg(test)]
 mod tests {
-    use super::IndirectReference;
+    use super::Reference;
 
     #[test]
     fn should_equal_when_number_and_generation_are_equal() {
         
-        let ref1 = IndirectReference::new(1, 0);
-        let ref2 = IndirectReference::new(1, 0);
+        let ref1 = Reference::new(1, 0);
+        let ref2 = Reference::new(1, 0);
         
         assert_eq!(ref1, ref2);
     }   
@@ -60,9 +60,9 @@ mod tests {
     #[test]
     fn should_not_equal_when_number_or_generation_are_different() {
         
-        let ref1 = IndirectReference::new(1, 0);
-        let ref2 = IndirectReference::new(2, 0);
-        let ref3 = IndirectReference::new(1, 1);
+        let ref1 = Reference::new(1, 0);
+        let ref2 = Reference::new(2, 0);
+        let ref3 = Reference::new(1, 1);
 
         assert_ne!(ref1, ref2);
         assert_ne!(ref1, ref3);
@@ -71,7 +71,7 @@ mod tests {
     #[test]
     fn should_return_valid_bytes() {
         
-        let indirect_reference = IndirectReference::new(1, 0);
+        let indirect_reference = Reference::new(1, 0);
         let expected_bytes = b"1 0 R".to_vec();
         
         assert_eq!(indirect_reference.as_bytes(), expected_bytes);
