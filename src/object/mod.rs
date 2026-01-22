@@ -47,24 +47,6 @@ pub enum DirectObject {
     Real(Real),
 }
 
-impl DirectObject {
-    
-    /// Returns the byte representation of the Direct Object.
-    pub fn as_bytes(&self) -> &[u8] {
-        match self {
-            DirectObject::Array(obj) => obj.as_bytes(),
-            DirectObject::Boolean(obj) => obj.as_bytes(),
-            DirectObject::Dicionary(obj) => obj.as_bytes(),
-            DirectObject::Integer(obj) => obj.as_bytes(),
-            DirectObject::Name(obj) => obj.as_bytes(),
-            DirectObject::Null(obj) => obj.as_bytes(),
-            DirectObject::Real(obj) => obj.as_bytes(),
-            DirectObject::LiteralString(obj) => obj.as_bytes(),
-            DirectObject::HexadecimalString(obj) => obj.as_bytes(),
-        }
-    }
-}
-
 /// PDF Indirect Object representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum IndirectObject {
@@ -74,16 +56,4 @@ pub enum IndirectObject {
     Reference(Reference),
     /// PDF `Stream` object.
     Stream(Stream),
-}
-
-impl IndirectObject {
-    
-    /// Returns the byte representation of the Indirect Object.
-    pub fn as_bytes(&self) -> Vec<u8> {
-        match self {
-            IndirectObject::Object(obj) => obj.as_bytes(),
-            IndirectObject::Reference(obj) => obj.as_bytes(),
-            _ => unimplemented!(),
-        }
-    }
 }

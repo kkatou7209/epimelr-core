@@ -1,32 +1,20 @@
-use crate::specification::object::integer::validate_integer_bytes;
-
 /// PDF Integer object representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Integer {
-    bytes: Vec<u8>,
+    value: i32,
 }
 
 impl Integer {
 
     /// Creates a new `Integer` from the given bytes.
-    pub fn new(bytes: &[u8]) -> Result<Self, String> {
+    pub fn new(int: i32) -> Result<Self, String> {
 
-        if let Err(e) = validate_integer_bytes(bytes) {
-            return Err(format!("Invalid integer bytes: {:?}", e));
-        }
-
-        Ok(Self { bytes: bytes.to_vec() })
+        Ok(Self { value: int })
     }
 
-    /// Returns the byte representation of the Integer.
-    pub fn as_bytes(&self) -> &[u8] {
+    /// Returns the value of the Integer as i32.
+    pub fn as_i32(&self) -> i32 {
 
-        &self.bytes
-    }
-
-    pub fn as_u32(&self) -> u32 {
-
-        self.bytes.iter()
-            .fold(0u32, |acc, &b| acc * 10 + (b - b'0') as u32)
+        self.value as i32
     }
 }

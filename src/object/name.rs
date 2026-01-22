@@ -4,25 +4,27 @@ use crate::specification::object::name::validate_name_bytes;
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Name {
     /// The bytes of the name.
-    bytes: Vec<u8>,
+    value: String,
 }
 
 impl Name {
     
     /// Creates a new `Name` from the given bytes.
-    pub fn new(bytes: &[u8]) -> Result<Self, String> {
+    pub fn new(name: impl AsRef<str>) -> Result<Self, String> {
+
+        let name = name.as_ref().to_string();
         
-        if let Err(e) = validate_name_bytes(bytes) {
-            return Err(format!("Invalid name bytes: {:?}", e));
+        if name.is_empty() {
+            return Err(format!("Name cannot be empty"));
         }
 
-        Ok(Self { bytes: bytes.to_vec() })
+        Ok(Self { value: name })
     }
 
-    /// Returns the byte representation of the Name.
-    pub fn as_bytes(&self) -> &[u8] {
-
-        &self.bytes
+    /// Returns the string value of the Name.
+    pub fn as_str(&self) -> &str {
+        
+        &self.value
     }
 }
 
@@ -32,13 +34,13 @@ mod tests {
 
     #[test]
     fn should_create_valid_name() {
-        let name = Name::new(b"/ExampleName").unwrap();
-        assert_eq!(name.as_bytes(), b"/ExampleName");
+        let name = Name::new("ExampleName").unwrap();
+        assert_eq!(name.as_str(), "ExampleName");
     }
 
     #[test]
     fn should_error_when_creating_name_with_invalid_characters() {
-        let result = Name::new(b"/Invalid Name ");
+        let result = Name::new("");
         assert!(result.is_err());
     }
 }

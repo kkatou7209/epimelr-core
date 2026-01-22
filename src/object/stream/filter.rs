@@ -15,7 +15,7 @@ impl Filter {
     pub fn new(value: FilterValue) -> Self {
 
         Self {
-            name: Name::new(b"/Filter").unwrap(),
+            name: Name::new("Filter").unwrap(),
             value
         }
     }
@@ -42,42 +42,6 @@ impl Filter {
     pub fn is_array(&self) -> bool {
 
         matches!(self.value, FilterValue::Array(_))
-    }
-
-    /// Returns the byte representation of the `Filter`.
-    pub fn as_bytes(&self) -> Vec<u8> {
-
-        match self.value {
-            FilterValue::Name(ref filter_name) => {
-                
-                let mut bytes: Vec<u8> = Vec::new();
-
-                bytes.extend_from_slice(b"/Filter ");
-                bytes.extend_from_slice(&filter_name.as_bytes());
-
-                bytes
-            },
-            FilterValue::Array(ref filter_names) => {
-                
-                let names: Vec<Name> = filter_names.iter()
-                    .map(|fnm| fnm.name_object())
-                    .collect();
-
-                let array = Array::new(
-                    names.into_iter()
-                        .map(|n| ArrayElement::Name(n))
-                        .collect()
-                );
-
-                let mut bytes: Vec<u8> = Vec::new();
-
-                bytes.extend_from_slice(b"/Filter ");
-                bytes.extend_from_slice(array.as_bytes());
-
-                bytes
-            }
-        }
-        
     }
 }
 
@@ -121,23 +85,17 @@ impl FilterName {
     pub fn name_object(&self) -> Name {
 
         match self {
-            FilterName::ASCIIHexDecode => Name::new(b"/ASCIIHexDecode").unwrap(),
-            FilterName::ASCII85Decode => Name::new(b"/ASCII85Decode").unwrap(),
-            FilterName::LZWDecode => Name::new(b"/LZWDecode").unwrap(),
-            FilterName::FlateDecode => Name::new(b"/FlateDecode").unwrap(),
-            FilterName::RunLengthDecode => Name::new(b"/RunLengthDecode").unwrap(),
-            FilterName::CCITTFaxDecode => Name::new(b"/CCITTFaxDecode").unwrap(),
-            FilterName::JBIG2Decode => Name::new(b"/JBIG2Decode").unwrap(),
-            FilterName::DCTDecode => Name::new(b"/DCTDecode").unwrap(),
-            FilterName::JPXDecode => Name::new(b"/JPXDecode").unwrap(),
-            FilterName::Crypt => Name::new(b"/Crypt").unwrap(),
+            FilterName::ASCIIHexDecode => Name::new("ASCIIHexDecode").unwrap(),
+            FilterName::ASCII85Decode => Name::new("ASCII85Decode").unwrap(),
+            FilterName::LZWDecode => Name::new("LZWDecode").unwrap(),
+            FilterName::FlateDecode => Name::new("FlateDecode").unwrap(),
+            FilterName::RunLengthDecode => Name::new("RunLengthDecode").unwrap(),
+            FilterName::CCITTFaxDecode => Name::new("CCITTFaxDecode").unwrap(),
+            FilterName::JBIG2Decode => Name::new("JBIG2Decode").unwrap(),
+            FilterName::DCTDecode => Name::new("DCTDecode").unwrap(),
+            FilterName::JPXDecode => Name::new("JPXDecode").unwrap(),
+            FilterName::Crypt => Name::new("Crypt").unwrap(),
         }
-    }
-
-    /// Returns the byte representation of the Filter Name.
-    pub fn as_bytes(&self) -> Vec<u8> {
-
-        self.name_object().as_bytes().to_vec()
     }
 }
 
@@ -151,7 +109,7 @@ mod tests {
 
         let filter = Filter::new(FilterValue::Name(FilterName::FlateDecode));
         
-        assert_eq!(filter.name_object(), &Name::new(b"/Filter").unwrap());
+        assert_eq!(filter.name_object(), &Name::new("Filter").unwrap());
     }
 
     #[test]
@@ -169,35 +127,5 @@ mod tests {
 
         assert_eq!(filter.is_name(), false);
         assert_eq!(filter.is_array(), true);
-    }
-
-    #[test]
-    fn should_filter_returns_valid_bytes() {
-
-        let filter = Filter::new(FilterValue::Name(FilterName::FlateDecode));
-        
-        assert_eq!(filter.as_bytes(), b"/Filter /FlateDecode".to_vec());
-
-        let filter = Filter::new(FilterValue::Array(vec![
-            FilterName::ASCII85Decode,
-            FilterName::FlateDecode,
-        ]));
-
-        assert_eq!(filter.as_bytes(), b"/Filter [/ASCII85Decode /FlateDecode]".to_vec());
-    }
-
-    #[test]
-    fn should_filter_name_returns_valid_bytes() {
-
-        assert_eq!(FilterName::ASCIIHexDecode.as_bytes(), b"/ASCIIHexDecode".to_vec());
-        assert_eq!(FilterName::DCTDecode.as_bytes(), b"/DCTDecode".to_vec());
-        assert_eq!(FilterName::FlateDecode.as_bytes(), b"/FlateDecode".to_vec());
-        assert_eq!(FilterName::LZWDecode.as_bytes(), b"/LZWDecode".to_vec());
-        assert_eq!(FilterName::RunLengthDecode.as_bytes(), b"/RunLengthDecode".to_vec());
-        assert_eq!(FilterName::CCITTFaxDecode.as_bytes(), b"/CCITTFaxDecode".to_vec());
-        assert_eq!(FilterName::JBIG2Decode.as_bytes(), b"/JBIG2Decode".to_vec());
-        assert_eq!(FilterName::DCTDecode.as_bytes(), b"/DCTDecode".to_vec());
-        assert_eq!(FilterName::JPXDecode.as_bytes(), b"/JPXDecode".to_vec());
-        assert_eq!(FilterName::Crypt.as_bytes(), b"/Crypt".to_vec());
     }
 }

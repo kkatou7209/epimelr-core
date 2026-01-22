@@ -12,14 +12,3 @@ pub enum LiteralChar {
     /// PDF Escape Sequence character representation.
     EscapeSequence(EscapeSequence),
 }
-
-impl LiteralChar {
-    
-    /// Returns the byte representation of the Literal Character.
-    pub fn as_bytes(&self) -> &[u8] {
-        match self {
-            LiteralChar::Ascii(ascii) => ascii.as_bytes(),
-            LiteralChar::EscapeSequence(escape_sequence) => escape_sequence.as_bytes(),
-        }
-    }
-}

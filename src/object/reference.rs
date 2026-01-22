@@ -10,12 +10,16 @@ pub struct Reference {
 impl Reference {
     
     /// Creates a new `IndirectReference` from the given number and generation.
-    pub fn new(number: u32, generation: u32) -> Self {
+    pub fn new(number: u32, generation: u32) -> Result<Self, String> {
+
+        if number == 0 {
+            return Err(format!("Number must be greater than 0"));
+        }
         
-        Self {
+        Ok(Self {
             number,
             generation,
-        }
+        })
     }
 
     /// Returns the number of the Indirect Reference.
@@ -28,19 +32,6 @@ impl Reference {
     pub fn generation(&self) -> &u32 {
         
         &self.generation
-    }
-
-    /// Returns the byte representation of the Indirect Reference.
-    pub fn as_bytes(&self) -> Vec<u8> {
-
-        let mut bytes = Vec::new();
-
-        bytes.extend_from_slice(self.number.to_string().as_bytes());
-        bytes.push(b' ');
-        bytes.extend_from_slice(self.generation.to_string().as_bytes());
-        bytes.extend_from_slice(b" R");
-
-        bytes
     }
 }
 
@@ -66,14 +57,5 @@ mod tests {
 
         assert_ne!(ref1, ref2);
         assert_ne!(ref1, ref3);
-    }
-
-    #[test]
-    fn should_return_valid_bytes() {
-        
-        let indirect_reference = Reference::new(1, 0);
-        let expected_bytes = b"1 0 R".to_vec();
-        
-        assert_eq!(indirect_reference.as_bytes(), expected_bytes);
     }
 }

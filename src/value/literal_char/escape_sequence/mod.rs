@@ -31,23 +31,3 @@ pub enum EscapeSequence {
     /// following a backslash (`\`) is treated as a just Line Feed.
     EndOfLine,
 }
-
-impl EscapeSequence {
-    
-    /// Returns the byte representation of the escape sequence.
-    pub fn as_bytes(&self) -> &[u8] {
-        match self {
-            EscapeSequence::LineFeed => br"\n",
-            EscapeSequence::CarriageReturn => br"\r",
-            EscapeSequence::Tab => br"\t",
-            EscapeSequence::Backspace => br"\\",
-            EscapeSequence::FormFeed => br"\f",
-            EscapeSequence::LeftParenthesis => br"\(",
-            EscapeSequence::RightParenthesis => br"\)",
-            EscapeSequence::Backslash => br"\\",
-            EscapeSequence::CharacterCode(code) => code.as_bytes(),
-            EscapeSequence::Empty => br"\",
-            EscapeSequence::EndOfLine => b"\n",
-        }
-    }
-}

@@ -13,11 +13,6 @@ impl Null {
     pub fn new() -> Self {
         Self {}
     }
-
-    /// Returns the byte representation of the Null object.
-    pub fn as_bytes(&self) -> &[u8] {
-        b"null"
-    }
 }
 
 impl PartialEq for Null {

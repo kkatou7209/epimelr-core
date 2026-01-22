@@ -12,12 +12,18 @@ pub struct Length {
 impl Length {
     
     /// Creates a new `Length` object.
-    pub fn new(value: Integer) -> Self {
-        
-        Self {
-            name: Name::new(b"/Length").unwrap(),
-            value
+    pub fn new(len: impl Into<Integer>) -> Result<Self, String> {
+
+        let len = len.into();
+
+        if len.as_i32() < 0 {
+            return Err("Length value must be non-negative".to_string());
         }
+        
+        Ok(Self {
+            name: Name::new("Length").unwrap(),
+            value: len,
+        })
     }
 
     /// Returns the `Name` object of the Length.
@@ -35,32 +41,6 @@ impl Length {
     /// Returns the value of the `Length` as u32.
     pub fn as_u32(&self) -> u32 {
 
-        self.value.as_u32()
-    }
-
-    pub fn as_bytes(&self) -> Vec<u8> {
-
-        let mut bytes = Vec::new();
-        bytes.extend_from_slice(self.name.as_bytes());
-        bytes.push(b' ');
-        bytes.extend_from_slice(self.value.as_bytes());
-        bytes
-    }
-}
-
-#[cfg(test)]
-mod tests {
-
-    use super::Length;
-    use crate::object::Integer;
-
-    #[test]
-    fn should_length_returns_valid_name_and_value() {
-
-        let length = Length::new(Integer::new(b"123").unwrap());
-
-        assert_eq!(length.name_object().as_bytes(), b"/Length");
-        assert_eq!(length.integer_object().as_bytes(), b"123");
-        assert_eq!(length.as_u32(), 123);
+        self.value.as_i32() as u32
     }
 }

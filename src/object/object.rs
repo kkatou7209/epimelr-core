@@ -14,13 +14,17 @@ pub struct Object {
 impl Object {
     
     /// Creates a new `IndirectObject` from the given number, generation, and object.
-    pub fn new(number: u32, generation: u32, object: DirectObject) -> Self {
+    pub fn new(number: u32, generation: u32, object: DirectObject) -> Result<Self, String> {
         
-        Self {
+        if number == 0 {
+            return Err(format!("Object number must be greater than 0"));
+        }
+
+        Ok(Self {
             number,
             generation,
             object,
-        }
+        })
     }
 
     /// Returns the number of the Indirect Object.
@@ -39,23 +43,6 @@ impl Object {
     pub fn object(&self) -> &DirectObject {
         
         &self.object
-    }
-
-    /// Returns the byte representation of the Indirect Object.
-    pub fn as_bytes(&self) -> Vec<u8> {
-
-        let mut bytes = Vec::new();
-
-        bytes.extend_from_slice(self.number.to_string().as_bytes());
-        bytes.push(b' ');
-        bytes.extend_from_slice(self.generation.to_string().as_bytes());
-        bytes.push(b' ');
-        bytes.extend_from_slice(b"obj\n");
-        bytes.extend_from_slice(self.object.as_bytes());
-        bytes.push(b'\n');
-        bytes.extend_from_slice(b"endobj");
-
-        bytes
     }
 }
 
@@ -88,12 +75,5 @@ mod tests {
         let obj3 = Object::new(1, 1, DirectObject::Null(Null::new()));
         assert_ne!(obj1, obj2);
         assert_ne!(obj1, obj3);
-    }
-
-    #[test]
-    fn should_return_valid_bytes() {
-        let indirect_object = Object::new(1, 0, DirectObject::Null(Null::new()));
-        let expected_bytes = b"1 0 obj\nnull\nendobj".to_vec();
-        assert_eq!(indirect_object.as_bytes(), expected_bytes);
     }
 }

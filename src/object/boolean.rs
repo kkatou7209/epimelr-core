@@ -15,16 +15,6 @@ impl Boolean {
         
         self.0
     }
-
-    /// Returns the byte representation of the Boolean.
-    pub fn as_bytes(&self) -> &[u8] {
-
-        if self.0 {
-            b"true"
-        } else {
-            b"false"
-        }
-    }
 }
 
 #[cfg(test)]
@@ -35,13 +25,11 @@ mod tests {
     fn should_create_true_boolean() {
         let boolean = Boolean::new(true);
         assert_eq!(boolean.as_bool(), true);
-        assert_eq!(boolean.as_bytes(), b"true");
     }
 
     #[test]
     fn should_create_false_boolean() {
         let boolean = Boolean::new(false);
         assert_eq!(boolean.as_bool(), false);
-        assert_eq!(boolean.as_bytes(), b"false");
     }
 }
