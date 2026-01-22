@@ -23,4 +23,10 @@ impl Integer {
 
         &self.bytes
     }
+
+    pub fn as_u32(&self) -> u32 {
+
+        self.bytes.iter()
+            .fold(0u32, |acc, &b| acc * 10 + (b - b'0') as u32)
+    }
 }
