@@ -4,7 +4,7 @@ use crate::object::*;
 
 /// PDF Dictionary entry representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct DicionaryEntry {
+pub struct DictionaryEntry {
     pub key: Name,
     pub value: DictionaryValue,
 }
@@ -18,16 +18,17 @@ pub struct Dicionary {
 impl Dicionary {
     
     /// Creates a new `Dicionary` from the given entries.
-    pub fn new(entries: Vec<DicionaryEntry>) -> Self {
+    pub fn new(entries: Vec<DictionaryEntry>) -> Self {
 
         Self {
             entries: entries.into_iter().map(|e| (e.key, e.value)).collect(),
         }
     }
 
-    /// Returns the entries of the Dicionary.
-    pub fn entries(&self) -> &HashMap<Name, DictionaryValue> {
-        &self.entries
+    /// Returns value of related key.
+    pub fn get(&self, key: &Name) -> Option<&DictionaryValue> {
+        
+        self.entries.get(key)
     }
 }
 
@@ -52,4 +53,6 @@ pub enum DictionaryValue {
     Null(Null),
     /// PDF `Real` object.
     Real(Real),
+    /// PDF `Reference` object.
+    Reference(Reference),
 }

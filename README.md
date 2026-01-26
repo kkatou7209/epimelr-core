@@ -21,7 +21,7 @@ Currently, I'm learning the PDF specification and implementing basic features.
 
 This roadmap may changes as the development progresses.
 
-- [ ] Basic PDF Objects
+- [x] Basic PDF Objects
   - [x] Header
     - [x] Version
     - [x] Binary Marker
@@ -35,29 +35,26 @@ This roadmap may changes as the development progresses.
     - [x] Null Objects
   - [x] Indirect Objects
   - [x] Indirect References
-  - [ ] Stream Objects
-
+  - [x] Stream Objects
 - [ ] Structure
   - [ ] Document Catalog
   - [ ] Cross-Reference Table
   - [ ] Trailer
   - [ ] Object Streams
   - [ ] Cross-Reference Streams
-
 - [ ] Creation
   - [ ] Document Structure
   - [ ] Page Management
   - [ ] Content Streams
-
 - [ ] Parsing
   - [ ] Tokenization
   - [ ] Object Parsing
-
 - [ ] Modification
   - [ ] Incremental Updates
-
-- [ ] Plugins
-  - [ ] Compression (Filter)
-  - [ ] Encryption
-  - [ ] Security
-  - [ ] Font Handling
+- [ ] Standard Filters
+- [ ] Functions
+- [ ] Files
+- [ ] Graphics
+- [ ] Text
+- [ ] Rendering
+- [ ] Transparency

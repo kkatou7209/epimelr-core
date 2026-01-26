@@ -12,7 +12,7 @@ mod string;
 
 pub use array::{Array, ArrayElement};
 pub use boolean::Boolean;
-pub use dicionary::{Dicionary, DicionaryEntry, DictionaryValue};
+pub use dicionary::{Dicionary, DictionaryEntry, DictionaryValue};
 pub use string::{HexadecimalString, LiteralString};
 pub use integer::Integer;
 pub use name::Name;
