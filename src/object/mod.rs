@@ -10,6 +10,8 @@ mod reference;
 mod stream;
 mod string;
 
+use std::fmt::Display;
+
 pub use array::{Array, ArrayElement};
 pub use boolean::Boolean;
 pub use dicionary::{Dicionary, DictionaryEntry, DictionaryValue};
@@ -43,6 +45,27 @@ pub enum DirectObject {
     Null(Null),
     /// PDF `Real` object.
     Real(Real),
+    /// PDF `Stream` object.
+    Stream(Stream),
+}
+
+impl Display for DirectObject {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        
+        match self {
+            DirectObject::Array(obj) => write!(f, "{}", obj),
+            DirectObject::Boolean(obj) => write!(f, "{}", obj),
+            DirectObject::Dicionary(obj) => write!(f, "{}", obj),
+            DirectObject::LiteralString(obj) => write!(f, "{}", obj),
+            DirectObject::HexadecimalString(obj) => write!(f, "{}", obj),
+            DirectObject::Integer(obj) => write!(f, "{}", obj),
+            DirectObject::Name(obj) => write!(f, "{}", obj),
+            DirectObject::Null(obj) => write!(f, "{}", obj),
+            DirectObject::Real(obj) => write!(f, "{}", obj),
+            DirectObject::Stream(obj) => write!(f, "{}", obj),
+        }
+    }
 }
 
 /// PDF Indirect Object representation.
@@ -52,6 +75,15 @@ pub enum IndirectObject {
     Object(Object),
     /// PDF `Reference` object.
     Reference(Reference),
-    /// PDF `Stream` object.
-    Stream(Stream),
+}
+
+impl Display for IndirectObject {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        
+        match self {
+            IndirectObject::Object(obj) => write!(f, "{}", obj),
+            IndirectObject::Reference(obj) => write!(f, "{}", obj),
+        }
+    }
 }

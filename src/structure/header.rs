@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::structure::byte_marker::ByteMarker;
 use crate::structure::version::Version;
 
@@ -13,11 +15,10 @@ pub struct Header {
 impl Header {
 
     /// Creates a new `Header` with the given PDF version.
-    pub fn new(version: Version) -> Self {
+    pub fn new(version: Version, byte_marker: ByteMarker) -> Self {
         Self {
             version,
-            // Traditional byte marker "%âãÏÓ"
-            byte_marker: ByteMarker::new(b"\xE2\xE3\xCF\xD3".to_vec()).unwrap(),
+            byte_marker,
         }
     }
 
@@ -33,3 +34,19 @@ impl Header {
     }
 }
 
+impl Display for Header {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}\n{}", self.version, self.byte_marker)
+    }
+}
+
+impl Default for Header {
+    
+    fn default() -> Self {
+        Self {
+            version: Version::default(),
+            byte_marker: ByteMarker::default(),
+        }
+    }
+}

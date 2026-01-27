@@ -1,3 +1,4 @@
+use std::fmt::Display;
 use std::sync::LazyLock;
 
 /// A PDF Null object representation.
@@ -20,5 +21,12 @@ impl PartialEq for Null {
     /// Null objects are always considered unequal.
     fn eq(&self, _other: &Self) -> bool {
         false
+    }
+}
+
+impl Display for Null {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "null")
     }
 }

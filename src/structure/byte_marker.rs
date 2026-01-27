@@ -1,10 +1,11 @@
+use std::fmt::Display;
+
 use crate::specification::structure::byte_marker::validate_byte_marker_value;
 
 /// PDF Byte Marker representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ByteMarker {
     value: Vec<u8>,
-    bytes: Vec<u8>,
 }
 
 impl ByteMarker {
@@ -17,10 +18,7 @@ impl ByteMarker {
             return Err(format!("Invalid byte marker value: {:?}, error: {}", value, e));
         }
 
-        let mut bytes = vec![b'%'];
-        bytes.extend_from_slice(&value);
-        
-        Ok(Self { value, bytes })
+        Ok(Self { value})
     }
 
     /// Returns the value of the byte marker.
@@ -28,9 +26,29 @@ impl ByteMarker {
         &self.value
     }
 
-    /// Returns the byte representation of the byte marker.
-    pub fn as_bytes(&self) -> &[u8] {
-        &self.bytes
+}
+
+impl Default for ByteMarker {
+    
+    fn default() -> Self {
+        
+        Self {
+            value: b"\xE2\xE3\xCF\xD3".to_vec(),
+        }
+    }
+}
+
+impl Display for ByteMarker {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        
+        write!(f, "%")?;
+        
+        for byte in &self.value {
+            write!(f, "{}", *byte as char)?;
+        }
+        
+        Ok(())
     }
 }
 
@@ -42,6 +60,5 @@ mod tests {
     fn should_create_valid_byte_marker() {
         let byte_marker = ByteMarker::new(b"\xE2\xE3\xCF\xD3".to_vec()).unwrap();
         assert_eq!(byte_marker.value(), b"\xE2\xE3\xCF\xD3");
-        assert_eq!(byte_marker.as_bytes(), b"%\xE2\xE3\xCF\xD3");
     }
 }

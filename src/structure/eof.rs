@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 
 /// A PDF End-Of-File (EOF) marker representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -9,9 +11,18 @@ impl EOF {
     pub fn new() -> Self {
         Self {}
     }
+}
 
-    /// Returns the byte representation of the EOF marker.
-    pub fn as_bytes(&self) -> &[u8] {
-        b"%%EOF"
+impl Default for EOF {
+    
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl Display for EOF {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "%%EOF")
     }
 }

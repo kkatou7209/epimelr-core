@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::specification::structure::version::validate_version;
 
 /// PDF version representation.
@@ -39,6 +41,20 @@ impl Version {
     /// Returns the byte representation of the version.
     pub fn as_bytes(&self) -> &[u8] {
         &self.bytes
+    }
+}
+
+impl Default for Version {
+    
+    fn default() -> Self {
+        Self::new(1, 7).unwrap()
+    }
+}
+
+impl Display for Version {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "%PDF-{}.{}", self.major, self.minor)
     }
 }
 

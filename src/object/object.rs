@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::object::{DirectObject};
 
 /// PDF Indirect Object representation.
@@ -51,6 +53,13 @@ impl PartialEq for Object {
     fn eq(&self, other: &Self) -> bool {
         self.number == other.number 
         && self.generation == other.generation
+    }
+}
+
+impl Display for Object {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} {} obj\n{}\nendobj", self.number, self.generation, self.object)
     }
 }
 

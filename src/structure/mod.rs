@@ -1,13 +1,16 @@
 //! This module contains structures representing various PDF structural elements.
 
-mod comment;
-mod header;
-mod version;
 mod byte_marker;
+mod comment;
+mod cross_reference;
 mod eof;
+mod header;
+mod trailer;
+mod version;
 
-pub use crate::structure::comment::StructuralComment;
-pub use crate::structure::header::Header;
-pub use crate::structure::version::Version;
-pub use crate::structure::byte_marker::ByteMarker;
-pub use crate::structure::eof::EOF;
+pub use byte_marker::ByteMarker;
+pub use comment::StructuralComment;
+pub use cross_reference::{CrossReference, CrossReferenceSection};
+pub use eof::EOF;
+pub use header::Header;
+pub use version::Version;

@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::object::string::{Ascii, EscapeSequence};
 
 /// PDF Literal String representation.
@@ -24,6 +26,20 @@ impl LiteralString {
     }
 }
 
+impl Display for LiteralString {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        
+        write!(f, "(")?;
+
+        for char in &self.chars {
+            write!(f, "{}", char)?;
+        }
+
+        write!(f, ")")
+    }
+}
+
 /// PDF Literal string character representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum LiteralChar {
@@ -31,4 +47,15 @@ pub enum LiteralChar {
     Ascii(Ascii),
     /// PDF Escape Sequence character representation.
     EscapeSequence(EscapeSequence),
+}
+
+impl Display for LiteralChar {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        
+        match self {
+            LiteralChar::Ascii(ascii) => write!(f, "{}", ascii),
+            LiteralChar::EscapeSequence(escape) => write!(f, "{}", escape),
+        }
+    }
 }

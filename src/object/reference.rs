@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 /// PDF Indirect Reference representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Reference {
@@ -32,6 +34,13 @@ impl Reference {
     pub fn generation(&self) -> u32 {
         
         self.generation
+    }
+}
+
+impl Display for Reference {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} {} R", self.number, self.generation)
     }
 }
 

@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 /// PDF escape sequence representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum EscapeSequence {
@@ -28,6 +30,26 @@ pub enum EscapeSequence {
     EndOfLine,
 }
 
+impl Display for EscapeSequence {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        
+        match self {
+            EscapeSequence::LineFeed => write!(f, "\\n"),
+            EscapeSequence::CarriageReturn => write!(f, "\\r"),
+            EscapeSequence::Tab => write!(f, "\\t"),
+            EscapeSequence::Backspace => write!(f, "\\b"),
+            EscapeSequence::FormFeed => write!(f, "\\f"),
+            EscapeSequence::LeftParenthesis => write!(f, "\\("),
+            EscapeSequence::RightParenthesis => write!(f, "\\)"),
+            EscapeSequence::Backslash => write!(f, "\\\\"),
+            EscapeSequence::CharacterCode(code) => write!(f, "{}", code),
+            EscapeSequence::Empty => write!(f, "\\"),
+            EscapeSequence::EndOfLine => write!(f, "\\\n"),
+        }
+    }
+}
+
 /// PDF escaped character code representation.
 /// 
 /// A character code must be between `0` and `255`.
@@ -46,5 +68,13 @@ impl CharCode {
     pub fn as_byte(&self) -> u8 {
     
         self.0
+    }
+}
+
+impl Display for CharCode {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        
+        write!(f, "\\{:03}", self.0)
     }
 }
