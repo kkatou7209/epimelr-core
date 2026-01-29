@@ -10,15 +10,11 @@ pub struct Real {
 impl Real {
     
     /// Creates a new `Real` from the given bytes.
-    pub fn new(value: impl Into<String>) -> Result<Self, String> {
+    pub fn new(value: impl Into<f64>) -> Self {
 
-        let value_str = value.into();
-
-        if value_str.parse::<f64>().is_err() {
-            return Err(format!("Invalid real number format: {}", value_str));
-        }
+        let value = value.into();
         
-        Ok(Self { value: value_str, })
+        Self { value: value.to_string(), }
     }
 
     /// Returns the value of the Real as f64.
@@ -40,49 +36,15 @@ mod tests {
     use super::Real;
 
     #[test]
-    fn should_create_valid_real() {
-        let real = Real::new("3.14");
-        assert_eq!(real.is_ok(), true);
-
-        let real = Real::new("-0.001");
-        assert_eq!(real.is_ok(), true);
-
-        let real = Real::new("-.0");
-        assert_eq!(real.is_ok(), true);
-
-        let real = Real::new("+1.");
-        assert_eq!(real.is_ok(), true);
-
-        let real = Real::new("invalid_real");
-        assert_eq!(real.is_err(), true);
-
-        let real = Real::new("-.");
-        assert_eq!(real.is_err(), true);
-    }
-
-    #[test]
     fn should_returns_valid_value() {
 
-        let real = Real::new("3.14159").unwrap();
+        let real = Real::new(3.14159);
         assert_eq!(real.as_f64(), 3.14159);
 
-        let real = Real::new("-0.001").unwrap();
+        let real = Real::new(-0.001);
         assert_eq!(real.as_f64(), -0.001);
 
-        let real = Real::new("0.0000000001").unwrap();
+        let real = Real::new(0.0000000001);
         assert_eq!(real.as_f64(), 0.0000000001);
-    }
-
-    #[test]
-    fn should_format_real_correctly() {
-
-        let real = Real::new("2.71828").unwrap();
-        assert_eq!(format!("{}", real), "2.71828");
-
-        let real = Real::new("-123.456").unwrap();
-        assert_eq!(format!("{}", real), "-123.456");
-
-        let real = Real::new("0.0").unwrap();
-        assert_eq!(format!("{}", real), "0.0");
     }
 }

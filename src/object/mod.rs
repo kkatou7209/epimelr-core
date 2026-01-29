@@ -4,6 +4,7 @@ mod dicionary;
 mod integer;
 mod name;
 mod null;
+mod object_stream;
 mod object;
 mod real;
 mod reference;
@@ -14,7 +15,7 @@ use std::fmt::Display;
 
 pub use array::{Array, ArrayElement};
 pub use boolean::Boolean;
-pub use dicionary::{Dicionary, DictionaryEntry, DictionaryValue};
+pub use dicionary::{Dictionary, DictionaryEntry, DictionaryValue};
 pub use string::{HexadecimalString, LiteralString};
 pub use integer::Integer;
 pub use name::Name;
@@ -32,7 +33,7 @@ pub enum DirectObject {
     /// PDF `Boolean` object.
     Boolean(Boolean),
     /// PDF `Dicionary` object.
-    Dicionary(Dicionary),
+    Dicionary(Dictionary),
     /// PDF `LiteralString` object.
     LiteralString(LiteralString),
     /// PDF `HexadecimalString` object.

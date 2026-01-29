@@ -10,10 +10,10 @@ pub struct HexadecimalString {
 impl HexadecimalString {
     
     /// Creates a new `HexadecimalString` from a vector of `HexadecimalChar`.
-    pub fn new(chars: Vec<HexadecimalChar>) -> Self {
+    pub fn new(chars: impl IntoIterator<Item = HexadecimalChar>) -> Self {
         
         Self {
-            chars,
+            chars: chars.into_iter().collect(),
         }
     }
 

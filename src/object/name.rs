@@ -12,15 +12,12 @@ pub struct Name {
 impl Name {
     
     /// Creates a new `Name` from the given bytes.
-    pub fn new(name: impl Into<String>) -> Result<Self, String> {
+    pub fn new(name: impl Into<String>) -> Self {
 
         let name = name.into();
-        
-        if name.is_empty() {
-            return Err(format!("Name cannot be empty"));
-        }
 
-        Ok(Self { value: name })
+
+        Self { value: name }
     }
 
     /// Returns the string value of the Name.
@@ -57,19 +54,13 @@ mod tests {
 
     #[test]
     fn should_create_valid_name() {
-        let name = Name::new("ExampleName").unwrap();
+        let name = Name::new("ExampleName");
         assert_eq!(name.as_str(), "ExampleName");
     }
 
     #[test]
-    fn should_error_when_creating_name_with_invalid_characters() {
-        let result = Name::new("");
-        assert!(result.is_err());
-    }
-
-    #[test]
     fn should_format_name_correctly() {
-        let name = Name::new("NameWith#Special/Chars").unwrap();
+        let name = Name::new("NameWith#Special/Chars");
         assert_eq!(format!("{}", name), "/NameWith#23Special#2FChars");
     }
 }

@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use crate::object::{Boolean, Dicionary, HexadecimalString, Integer, LiteralString, Name, Null, Real};
+use crate::object::{Boolean, Dictionary, HexadecimalString, Integer, LiteralString, Name, Null, Real};
 
 /// A PDF Array object.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -49,7 +49,7 @@ pub enum ArrayElement {
     /// PDF `Boolean` object.
     Boolean(Boolean),
     /// PDF `Dicionary` object.
-    Dicionary(Dicionary),
+    Dicionary(Dictionary),
     /// PDF `LiteralString` object.
     LiteralString(LiteralString),
     /// PDF `HexadecimalString` object.
@@ -92,12 +92,12 @@ mod tests {
     fn should_format_array_correctly() {
 
         let array = Array::new(vec![
-            ArrayElement::Integer(Integer::new("42").unwrap()),
-            ArrayElement::Name(Name::new("Example").unwrap()),
+            ArrayElement::Integer(Integer::new(42)),
+            ArrayElement::Name(Name::new("Example")),
             ArrayElement::Null(Null::new()),
             ArrayElement::Array(Array::new(vec![
                 ArrayElement::Boolean(Boolean::truethy()),
-                ArrayElement::Real(Real::new("2").unwrap()),
+                ArrayElement::Real(Real::new(2.4)),
                 ArrayElement::HexadecimalString(HexadecimalString::new(vec![
                     HexadecimalChar::new(0xDE),
                     HexadecimalChar::new(0xAD),
@@ -109,6 +109,6 @@ mod tests {
 
         let formatted = format!("{}", array);
 
-        assert_eq!(formatted, "[42 /Example null [true 2 <DEADBEEF>]]");
+        assert_eq!(formatted, "[42 /Example null [true 2.4 <DEADBEEF>]]");
     }
 }

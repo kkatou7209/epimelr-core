@@ -1,12 +1,12 @@
 use std::fmt::Display;
 
-use crate::object::Dicionary;
+use crate::object::Dictionary;
 
 /// PDD stream object.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Stream {
     /// The stream dictionary.
-    dictionary: Dicionary,
+    dictionary: Dictionary,
     /// The stream content.
     content: Vec<u8>,
 }
@@ -14,13 +14,16 @@ pub struct Stream {
 impl Stream {
     
     /// Creates new `Stream` object.
-    pub fn new(dictionary: Dicionary, content: Vec<u8>) -> Self {
+    pub fn new(dictionary: Dictionary, content: impl IntoIterator<Item = u8>) -> Self {
         
-        Self { dictionary, content }
+        Self {
+            dictionary,
+            content: content.into_iter().collect()
+        }
     }
 
     /// Returns `Dictionary` of stream.
-    pub fn dictionary(&self) -> &Dicionary {
+    pub fn dictionary(&self) -> &Dictionary {
         
         &self.dictionary
     }

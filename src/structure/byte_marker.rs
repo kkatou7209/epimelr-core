@@ -11,14 +11,11 @@ pub struct ByteMarker {
 impl ByteMarker {
 
     /// Creates a new `ByteMarker` from the given byte vector.
-    pub fn new(value: Vec<u8>) -> Result<Self, String> {
+    pub fn new(value: impl IntoIterator<Item = u8>) -> Self {
 
-        if let Err(e) = validate_byte_marker_value(&value) {
-            
-            return Err(format!("Invalid byte marker value: {:?}, error: {}", value, e));
-        }
+        let value: Vec<u8> = value.into_iter().collect();
 
-        Ok(Self { value})
+        Self { value }
     }
 
     /// Returns the value of the byte marker.
@@ -58,7 +55,7 @@ mod tests {
 
     #[test]
     fn should_create_valid_byte_marker() {
-        let byte_marker = ByteMarker::new(b"\xE2\xE3\xCF\xD3".to_vec()).unwrap();
+        let byte_marker = ByteMarker::new(b"\xE2\xE3\xCF\xD3".to_vec());
         assert_eq!(byte_marker.value(), b"\xE2\xE3\xCF\xD3");
     }
 }

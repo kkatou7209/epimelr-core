@@ -9,23 +9,16 @@ pub struct Version {
     major: u8,
     /// PDF version minor number.
     minor: u8,
-    /// Byte representation of the version.
-    bytes: Vec<u8>,
 }
 
 impl Version {
     /// Creates a new `Version` with the given major and minor numbers.
-    pub fn new(major: u8, minor: u8) -> Result<Self, String> {
+    pub fn new(major: u8, minor: u8) -> Self {
 
-        if let Err(e) = validate_version(major, minor) {
-            return Err(format!("Invalid version {}.{}: {}", major, minor, e));
-        }
-
-        Ok(Self {
+        Self {
             major,
             minor,
-            bytes: format!("{}.{}", major, minor).into_bytes()
-        })
+        }
     }
 
     /// Returns the major version number.
@@ -37,17 +30,12 @@ impl Version {
     pub fn minor(&self) -> u8 {
         self.minor
     }
-
-    /// Returns the byte representation of the version.
-    pub fn as_bytes(&self) -> &[u8] {
-        &self.bytes
-    }
 }
 
 impl Default for Version {
     
     fn default() -> Self {
-        Self::new(1, 7).unwrap()
+        Self::new(1, 7)
     }
 }
 
@@ -61,12 +49,4 @@ impl Display for Version {
 #[cfg(test)]
 mod tests {
     use super::Version;
-
-    #[test]
-    fn test_version_creation() {
-        let version = Version::new(1, 7).unwrap();
-        assert_eq!(version.major(), 1);
-        assert_eq!(version.minor(), 7);
-        assert_eq!(version.as_bytes(), b"1.7");
-    }
 }

@@ -16,17 +16,13 @@ pub struct Object {
 impl Object {
     
     /// Creates a new `IndirectObject` from the given number, generation, and object.
-    pub fn new(number: u32, generation: u32, object: DirectObject) -> Result<Self, String> {
-        
-        if number == 0 {
-            return Err(format!("Object number must be greater than 0"));
-        }
+    pub fn new(number: u32, generation: u32, object: DirectObject) -> Self {
 
-        Ok(Self {
+        Self {
             number,
             generation,
             object,
-        })
+        }
     }
 
     /// Returns the number of the Indirect Object.

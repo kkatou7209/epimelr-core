@@ -12,12 +12,12 @@ pub struct DictionaryEntry {
 
 /// PDF Dictionary object representation.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Dicionary {
+pub struct Dictionary {
     /// The entries of the dictionary.
     entries: HashMap<Name, DictionaryValue>,
 }
 
-impl Dicionary {
+impl Dictionary {
     
     /// Creates a new `Dicionary` from the given entries.
     pub fn new(entries: impl IntoIterator<Item = DictionaryEntry>) -> Self {
@@ -40,7 +40,7 @@ impl Dicionary {
     }
 }
 
-impl Display for Dicionary {
+impl Display for Dictionary {
     
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         
@@ -62,7 +62,7 @@ pub enum DictionaryValue {
     /// PDF `Boolean` object.
     Boolean(Boolean),
     /// PDF `Dicionary` object.
-    Dicionary(Dicionary),
+    Dicionary(Dictionary),
     /// PDF `LiteralString` object.
     LiteralString(LiteralString),
     /// PDF `HexadecimalString` object.

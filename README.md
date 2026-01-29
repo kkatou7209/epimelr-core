@@ -9,6 +9,10 @@
 
 The library aims to offer a comprehensive set of features for working with PDF documents in a safe and efficient manner.
 
+### Supported PDF Version
+
+- PDF 1.7 (ISO 32000-1:2008)
+
 ## Features (Planned)
 
 - Parsing PDF files and extracting contents
@@ -38,8 +42,8 @@ This roadmap may changes as the development progresses.
   - [x] Stream Objects
 - [ ] Structure
   - [ ] Document Catalog
-  - [ ] Cross-Reference Table
-  - [ ] Trailer
+  - [x] Cross-Reference Table
+  - [x] Trailer
   - [ ] Object Streams
   - [ ] Cross-Reference Streams
 - [ ] Creation

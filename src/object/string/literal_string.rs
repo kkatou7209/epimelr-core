@@ -12,10 +12,10 @@ pub struct LiteralString {
 impl LiteralString {
     
     /// Creates a new `LiteralString` from the given vector of `LiteralCharacter`.
-    pub fn new(chars: Vec<LiteralChar>) -> Self {
+    pub fn new(chars: impl IntoIterator<Item = LiteralChar>) -> Self {
 
         Self {
-            chars,
+            chars: chars.into_iter().collect(),
         }
     }
 
